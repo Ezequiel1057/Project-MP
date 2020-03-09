@@ -1,4 +1,7 @@
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const authCongif = require("../config/auth")
+
 
 module.exports = (sequelize, Datatypes) => {
 	const User = sequelize.define(
@@ -28,8 +31,6 @@ module.exports = (sequelize, Datatypes) => {
 		return bcrypt.compare(password, this.password_hash);
 	};
 
-	User.static = {
-		generateToken({ id }) {}
-	};
+	
 	return User;
 };
