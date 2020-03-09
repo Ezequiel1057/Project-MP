@@ -1,21 +1,27 @@
 const { User } = require("../models")
-
+const jwt = require('jsonwebtoken');
+const authCongif = require("../config/auth");
 class SessionController{
 
     async store(req, res){
-        const {email, password} = req.body
+        const {email, password, id} = req.body
 
         const user =  await User.findOne({where:{ email }});
 
         if(!user){
-            return res.status(400).json({error: "Usuario não encontrado"});
+            return res.status(401).json({error: "Usuario não encontrado"});
         }
 
         if(!await user.checkPassword(password)){
-            return res.status(400).json({error: "Senha Incorreta"});
+            return res.status(401).json({error: "Senha Incorreta"});
         }
 
-        return res.json({user})
+        //Gera token deveria estar no session controller  ou na camada de modal(USER)
+        return res.json({user, token: jwt.sign({ id }, authCongif.secret, {
+            expiresIn: authCongif.ttl})
+        });
+
+
 
 
     }
