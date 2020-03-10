@@ -26,6 +26,12 @@ class UserController {
 
 		return res.json(user);
 	}
+
+
+	async update(req, res){
+		console.log(req.userId);
+		return res.status(200).json({message: "OK"});
+	}
 }
 
 module.exports = new UserController();

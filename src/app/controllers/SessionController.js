@@ -4,7 +4,7 @@ const authCongif = require("../config/auth");
 class SessionController{
 
     async store(req, res){
-        const {email, password, id} = req.body
+        const {email, password} = req.body;
 
         const user =  await User.findOne({where:{ email }});
 
@@ -15,9 +15,10 @@ class SessionController{
         if(!await user.checkPassword(password)){
             return res.status(401).json({error: "Senha Incorreta"});
         }
+        const {id, name } = user;
 
         //Gera token deveria estar no session controller  ou na camada de modal(USER)
-        return res.json({user, token: jwt.sign({ id }, authCongif.secret, {
+        return res.json({user:{ id, name, email }, token: jwt.sign({ id }, authCongif.secret, {
             expiresIn: authCongif.ttl})
         });
 
