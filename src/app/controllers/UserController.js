@@ -3,8 +3,6 @@ const { User } = require('../models');
 class UserController {
 	async store(req, res) {
 		const { email, cpf, password, confirm_password, user_name } = req.body;
-		console.log(email);
-		console.log(cpf);
 
 		if (await User.findOne({ where: { email } })) {
 			return res.status(400).json({ error: 'Já existe um Cadastro com esse email' });
@@ -29,8 +27,25 @@ class UserController {
 
 
 	async update(req, res){
-		console.log(req.userId);
-		return res.status(200).json({message: "OK"});
+		const {email, oldPassword } = req.body
+
+		const user = await User.findByPk(req.userId);
+		
+		if(email != user.email){
+
+			if (await User.findOne({ where: { email } })) {
+				return res.status(401).json({ error: 'Já existe um Cadastro com esse email' });
+			}
+		}
+
+		
+		if(oldPassword && !(await user.checkPassword(oldPassword))){
+			return res.status(401).json({error: "Senha antiga incorreta"})
+		}
+
+		 const newUser = await user.update(req.body);
+
+		return res.status(200).json(newUser);
 	}
 }
 
