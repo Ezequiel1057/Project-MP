@@ -1,6 +1,6 @@
 const { User } = require("../models")
 const jwt = require('jsonwebtoken');
-const authCongif = require("../config/auth");
+const authCongif = require("../../config/auth");
 class SessionController{
 
     async store(req, res){

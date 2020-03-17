@@ -9,7 +9,7 @@ class UserController {
 		}
 
 		if (await User.findOne({ where: { user_name } })) {
-			return res.status(400).json({ error: 'Nome de usuario indisponivel' });
+			return res.status(400).json({ error: 'Já existe um Cadastro com esse Nome de usuario' });
 		}
 
 		if (await User.findOne({ where: { cpf } })) {
@@ -40,7 +40,7 @@ class UserController {
 
 		
 		if(oldPassword && !(await user.checkPassword(oldPassword))){
-			return res.status(401).json({error: "Senha antiga incorreta"})
+			return res.status(401).json({error: "Senha atual incorreta"})
 		}
 
 		 const newUser = await user.update(req.body);

@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const authCongif = require("../config/auth")
+const authCongif = require("../../config/auth")
 
 
 module.exports = (sequelize, Datatypes) => {
